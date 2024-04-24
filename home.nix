@@ -1,4 +1,4 @@
-{ nixpkgs, config, pkgs, wezterm, ... }:
+{ inputs, nixpkgs, config, pkgs, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -19,9 +19,18 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
+    foot
     firefox
-    neovim
-    ticktick
+    # neovim
+    unstable.obsidian
+    nvim-pkg
+    kitty
+    git-credential-oauth
+    unstable.ticktick
+    unstable._1password-gui
+    freecad
+    unstable.beeper
+    unstable.discord
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     # pkgs.hello
@@ -70,9 +79,39 @@
   #
   #  /etc/profiles/per-user/jayson/etc/profile.d/hm-session-vars.sh
   #
-  home.sessionVariables = {
-    EDITOR = "neovim";
+
+  # programs.neovim = {
+  #   enable = true;
+  #   defaultEditor = true;
+  #   withPython3 = true;
+  #   plugins = with pkgs.vimPlugins; [ 
+  #     nvim-treesitter.withAllGrammars
+  #     vim-nix 
+  #     {
+  #       plugin = telescope-nvim;
+  #       type = "lua";
+  #       config = ''
+  #         require("config.telescope")
+  #       '';
+  #     }
+  #   ];
+  # };
+  # home.file = {
+  #   ".config/nvim" = {
+  #     recursive = true;
+  #     source = config/nvim;
+  #   };
+  # };
+
+  programs.ssh = { enable = true; };
+
+  programs.tmux = {
+    enable = true;
+    keyMode = "vi";
+    prefix = "C-a";
   };
+
+  programs.opam = { enable = true; };
 
   programs.git = {
     enable = true;
@@ -88,11 +127,14 @@
       enable = true;
       plugins = [ "git" ];
     };
+    initExtra = ''
+      unsetopt BEEP
+    '';
   };
 
   programs.wezterm = {
     enable = true;
-    package = wezterm.packages.${pkgs.system}.default;
+    package = inputs.wezterm.packages.${pkgs.system}.default;
   };
 
   # Let Home Manager install and manage itself.

@@ -28,7 +28,7 @@
     leiningen  # Clojure build tool
     # unstable.neovim
     unstable.obsidian
-    dbeaver
+    dbeaver-bin
     unstable.nvim-pkg
     # inputs.kickstart-nvim.packages.${pkgs.system}.default;
     kitty

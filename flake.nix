@@ -9,11 +9,15 @@
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # kickstart-nvim = {
+    #   url = "github:nix-community/kickstart-nix.nvim";
+    #   inputs.nixpkgs.follows = "nixpkgs-unstable";
+    # };
     kickstart-nvim = {
-      flake = true;
-      url = "github:jaycle/kickstart-nix.nvim";
+      url = "path:/home/jayson/projects/kickstart-nvim/";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    # kickstart-nvim = { url = "github:jaycle/kickstart-nix.nvim"; };
     wezterm.url = "github:wez/wezterm?dir=nix";
   };
 
@@ -25,6 +29,7 @@
         unstable = import nixpkgs-unstable {
           inherit system;
           config.allowUnfree = true;
+          overlays = [ inputs.kickstart-nvim.overlays.default ];
         };
       };
     in {
@@ -34,7 +39,7 @@
         modules = [
           ({ config, pkgs, ... }: {
             nixpkgs.overlays =
-              [ inputs.kickstart-nvim.overlays.default overlay-unstable ];
+              [ overlay-unstable ];
           })
           ./home.nix
         ];

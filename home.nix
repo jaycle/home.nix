@@ -1,6 +1,9 @@
-{ inputs, nixpkgs, config, pkgs, ... }:
+{ inputs, pkgs, ... }:
 
 {
+  imports = [
+    ./modules/programs
+  ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "jayson";
@@ -19,11 +22,15 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
+    calibre
     foot
     firefox
-    # neovim
+    leiningen  # Clojure build tool
+    # unstable.neovim
     unstable.obsidian
-    nvim-pkg
+    dbeaver
+    unstable.nvim-pkg
+    # inputs.kickstart-nvim.packages.${pkgs.system}.default;
     kitty
     git-credential-oauth
     unstable.ticktick
@@ -31,9 +38,6 @@
     freecad
     unstable.beeper
     unstable.discord
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
-    # pkgs.hello
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -105,13 +109,13 @@
 
   programs.ssh = { enable = true; };
 
-  programs.tmux = {
-    enable = true;
-    keyMode = "vi";
-    prefix = "C-a";
-  };
-
   programs.opam = { enable = true; };
+
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
+  };
 
   programs.git = {
     enable = true;
